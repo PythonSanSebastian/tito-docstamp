@@ -17,28 +17,41 @@ ROLES = ['crew',
          'participant']
 
 USERS_FILE = 'tito.csv'
-get_userrole_filepath = lambda users_file, role: os.path.basename(users_file).split('.')[0] + '_' + role + '.csv'
 
-COLUMNS = ['Number',
-           'Ticket',
-           'Ticket Full Name',
-           'Ticket First Name',
-           'Ticket Last Name',
-           'Ticket Email',
-           'Ticket Reference',
-           'Ticket Company Name',
-           'Badge information',
-           'Tags']
+
+def get_userrole_filepath(users_file, role):
+    return os.path.basename(users_file).split('.')[0] + '_' + role + '.csv'
+
+
+COLUMNS = [
+    'Number',
+    'Ticket',
+    'Ticket Full Name',
+    'Ticket First Name',
+    'Ticket Last Name',
+    'Ticket Email',
+    'Ticket Reference',
+    'Ticket Company Name',
+    'Badge information',
+    'Tags'
+]
+
 
 FILTER_TICKETS = {
     'Ticket': ('Business', 'Regular', 'Student')
 }
 
-MAXLENGTHS = {'Ticket First Name':   20,
-              'Ticket Last Name':    20,
-              'Ticket Company Name': 35,}
 
-COLS_WITH_2_LINES = {'Ticket Company Name',}
+MAXLENGTHS = {
+    'Ticket First Name':   20,
+    'Ticket Last Name':    20,
+    'Ticket Company Name': 35,
+}
+
+
+COLS_WITH_2_LINES = [
+    'Ticket Company Name'
+]
 
 
 def badge_template_file(role):
@@ -117,7 +130,7 @@ def _pdf_to_cmyk(input_file: str, output_file: str):
 
 
 def create_badge_set(input_file, outdir, template_file):
-    cmd = 'docstamp create -i "{}" -t "{}" -f "Ticket_Reference" -d pdf -o "{}"'.format(
+    cmd = 'docstamp create --unicode_support -i "{}" -t "{}" -f "Ticket_Reference" -d pdf -o "{}"'.format(
         input_file,
         template_file,
         outdir
@@ -247,11 +260,14 @@ def docker_build(ctx):
 
 
 @task
+def docker_launch(ctx):
+    ctx.run(f'docker run -d -t --rm -v "{os.path.abspath(os.curdir)}:/app" --name docstamp docstamp:latest')
+
+
+@task
 def docker_run(ctx):
-    ctx.run('docker run -d -i -t --rm --name docstamp -v $PWD:/app docstamp')
-    ctx.run('docker exec -ti docstamp sh -c "pipenv run inv all"')
+    ctx.run('docker exec -t docstamp sh -c "pipenv run inv all"')
     ctx.run('docker stop docstamp')
-    ctx.run('docker rm docstamp')
 
 
 @task
