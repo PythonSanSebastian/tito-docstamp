@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
-RUN apt-get update && \
-    apt-get install -y wget bash python3.6-venv python3.6-dev python3-pip build-essential inkscape unzip
+RUN apt update && \
+    apt install -y wget bash python3.6-venv python3.6-dev python3-pip build-essential inkscape unzip librsvg2-bin
 
 ENV LANG C.UTF-8
 ENV LANGUAGE C.UTF-8
