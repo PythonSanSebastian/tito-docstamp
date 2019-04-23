@@ -12,6 +12,7 @@ pandas = "*"
 svgutils = "*"
 
 [dev-packages]
+docker-compose = "*"
 
 [requires]
 python_version = "3.6"
