@@ -106,4 +106,8 @@ venv.bak/
 tito*
 stamped/
 blank/
+fonts/
 *.zip
+**/*.svg
+**/*.pdf
+*ipynb

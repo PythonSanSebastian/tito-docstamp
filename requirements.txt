@@ -1,6 +1,0 @@
-invoke
-docstamp
-click
-PyPDF2
-pandas
-svgutils

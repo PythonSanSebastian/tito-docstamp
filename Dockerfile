@@ -8,12 +8,12 @@ ENV LANGUAGE C.UTF-8
 ENV LC_ALL C.UTF-8
 
 WORKDIR /root
-COPY requirements.txt /root
+COPY Pipfile /root
+COPY Pipfile.lock /root
+ADD fonts /usr/local/share/fonts/
 
-RUN wget --header 'Host: dl.dafont.com' --header 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header 'Accept-Language: en-US,en;q=0.5' --referer 'https://www.dafont.com/sansation.font' --header 'Upgrade-Insecure-Requests: 1' 'https://dl.dafont.com/dl/?f=sansation' --output-document 'sansation.zip' && \
-    unzip sansation.zip -d /usr/local/share/fonts && \
-    fc-cache -f -v && \
-    pip3 install -U pip setuptools && \
-    pip3 install -r requirements.txt
+RUN fc-cache -f -v && \
+    python3 -m pip install -U pip setuptools pipenv && \
+    python3 -m pipenv install
 
 ENTRYPOINT bash
