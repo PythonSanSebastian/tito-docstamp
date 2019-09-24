@@ -2,7 +2,8 @@ import os
 
 from invoke import task
 
-from conferences.euroscipy2019 import *
+# from conferences.euroscipy2019 import *
+# from conferences.euroscipy2019_certificates import *
 
 
 @task

@@ -1,6 +1,7 @@
 
 import os
 import re
+import sys
 import logging
 import subprocess
 import textwrap
@@ -13,7 +14,11 @@ from invoke import task
 from docstamp.pdf_utils import merge_pdfs, pdf_to_cmyk
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 def first_true(iterable, default='', pred=None):
@@ -196,10 +201,11 @@ def wrap_cell_contents(df, field_maxlength):
 
 
 def create_badge_set(input_file, outdir, template_file):
-    cmd = f'docstamp create --unicode_support '
+    cmd = 'docstamp create --unicode_support '
     cmd += f'-i "{input_file}" '
     cmd += f'-t "{template_file}" '
     cmd += f'-f "email" '
+    cmd += f'--dpi 72 '
     cmd += f'-o "{outdir}" '
     cmd += f'-d pdf'
     logger.info('Calling {}'.format(cmd))
