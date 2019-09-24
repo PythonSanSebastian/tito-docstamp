@@ -26,7 +26,11 @@ clean-pyc:
 
 clean-results:
 	find . -name 'tito_*.csv' -delete
+	rm -rf certificates
+	mkdir certificates
+
 	rm -rf stamped
-	rm -rf blank
 	mkdir stamped
+
+	rm -rf blank
 	mkdir blank
